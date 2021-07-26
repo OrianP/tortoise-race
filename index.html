@@ -13,16 +13,51 @@
   <body>
     <h1>Tortoise Racing Game</h1>
 
+    <form>
+      <div class="tortoise-one-inputs">
+        <label for="name">Name</label>
+        <input id="name" name="name" type="text" placeholder="e.g. Michelangelo">
+        <label for="speed">Speed</label>
+        <input id="speed" class="slider" name="speed" type="range" min="0" max="5">
+        <button class="submit-btn" type="button">Submit</button>
+      </div>
+    </form>
+    <form>
+      <div class="tortoise-two-inputs">
+        <label for="name">Name</label>
+        <input id="name" name="name" type="text" placeholder="e.g. Raphael">
+        <label for="speed">Speed</label>
+        <input id="speed" class="slider" name="speed" type="range" min="0" max="5">
+        <button class="submit-btn" type="button">Submit</button>
+      </div>      
+    </form>
+
     <p>Click the buttons below to start racing the tortoises!</p>
 
-    <section class="race-area">
-      <div class="tortoise-one tortoise"><p class="tortoise-number">1</p></div>
-      <div class="tortoise-two tortoise"><p class="tortoise-number">2</p></div>
+    <section class="race">
+      <div class="info-board">
+        <div class="tortoise-one-info">
+          <p>Tortoise One</p>
+          <p>Speed:</p>
+        </div>
+        <div class="tortoise-two-info">
+          <p>Tortoise Two</p>
+          <p>Speed:</p>
+        </div>  
+      </div>
+
+      <div class="race-area">
+        <div class="tortoise-one tortoise"><p class="tortoise-number">1</p></div>
+        <div class="tortoise-two tortoise"><p class="tortoise-number">2</p></div>
+      </div>
     </section>
 
     <section class="race-controls">
-      <button class="race-go button"><span class="btn-txt">Go!</span>
-        <div class="race-pause hide"><i class="fas fa-pause"></i></div>
+      <button class="race-go button">
+        <span class="btn-txt">Go!</span>
+        <div class="race-pause hide">
+          <i class="fas fa-pause"></i>
+        </div>
       </button>
     </section>
   </body>
