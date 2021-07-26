@@ -32,7 +32,7 @@
   margin: 1em;
 }
 
-.button {
+ .button {
   background-color: darkolivegreen;
   color: whitesmoke;
   font-size: 2rem;
@@ -45,3 +45,9 @@
   color: darkolivegreen;
   cursor: pointer;
 }
+
+.hide {
+  display: none;
+}
+
+
