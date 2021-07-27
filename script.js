@@ -19,10 +19,11 @@ let nameTwo;
 let winner;
 let winnerMessage;
 let pauseMessage;
-let intervalId;
+let intervalIdOne;
+let intervalIdTwo;
 let interval = 500;
-// let intervalOne = Math.floor(1 + Math.random() * 5);
-// let intervalTwo = Math.floor(1 + Math.random() * 5);
+let intervalOne = 0;
+let intervalTwo = 0;
 
 // Event listeners
 
@@ -79,34 +80,54 @@ const startRace = () => {
     pauseMessage.textContent = `Can't handle the suspense? Pause the race and catch your breath`;
     raceControls.prepend(pauseMessage);
 
+    intervalOne = Math.floor(Math.random() * (901 - 500) + 500);
+    intervalTwo = Math.floor(Math.random() * (901 - 500) + 500);
+    console.log({intervalOne, intervalTwo})
+
     // assign each tortoise the user input speed in vw units for it's movements (distance traveled) 
     // each tortoise moves at it's own rate within a shared time interval defined by the setInterval method
-    intervalId = setInterval(() => {
-        tortoiseOne.style.transform =`translate(${speedOne + counterOne}vw)`;
+    intervalIdOne = setInterval(() => {
+        moveTortoise(tortoiseOne, speedOne, counterOne);
         counterOne += speedOne;
-        tortoiseTwo.style.transform =`translate(${speedTwo + counterTwo}vw)`;
-        counterTwo += speedTwo;
-
-        console.log({speedOne, speedTwo});
-        console.log({counterOne, counterTwo});
 
         // If one of the tortoises crosses 60vw (end of race area), pause the race and announce the winner
-        if (counterOne === 60 || counterTwo === 60) {
+    if (counterOne === 60) {
+        goButton.classList.add('end-of-race');
+        goButtonText.textContent = 'Reset';
+        pauseRace();
+        announceWinner();    
+    } 
+
+        console.log({speedOne});
+        console.log({counterOne});
+    }, intervalOne);
+
+    intervalIdTwo = setInterval(() => {
+        moveTortoise(tortoiseTwo, speedTwo, counterTwo);
+        counterTwo += speedTwo;
+        if (counterTwo === 60) {
             goButton.classList.add('end-of-race');
             goButtonText.textContent = 'Reset';
             pauseRace();
             announceWinner();    
-        }
-        
-    }, interval)
+        } 
+
+        console.log({speedTwo});
+        console.log({counterTwo});
+    }, intervalTwo)
 };
+
+const moveTortoise = (tortoise, speed, counter) => {
+    tortoise.style.transform = `translate(${speed + counter}vw)`;
+}
 
 // pause the game when the go button is clicked during the race
 // call clearInterval with the variable that is assigned the id created from setInterval method
 // remove 'racing' class
 // show button text and hide pause icon
 const pauseRace = () => {
-     clearInterval(intervalId);
+     clearInterval(intervalIdOne);
+     clearInterval(intervalIdTwo);
      goButton.classList.remove('racing');
      goButtonText.classList.remove('hide');
      pauseIcon.classList.add('hide');
@@ -155,9 +176,8 @@ const announceWinner = () => {
 }  
 
 // To do:
-    // Set randomly timed intervals for each tortoise
-    // requires breaking up the setInterval function into two seperate functions (one for each tortoise) 
-
+    // Check if the winner 'if' statement can be taken out of the setInterval functions and live inside the startRace function
+    
 // Stretch goals
     // change tortoise representation to cartoon or photo / emoji
     // add user ability to add more tortoises to the race

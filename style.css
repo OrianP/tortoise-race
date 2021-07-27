@@ -27,15 +27,14 @@ form > div {
 
 .race {
   display: flex;
-  justify-content: space-between;
   margin: 1em 0;
-  width: 80%;
 }
 
 .info-board {
   display: flex;
   flex-direction: column;
   justify-content: space-around;  
+  margin-right: 1.2em;
 }
 
 .name-display {
