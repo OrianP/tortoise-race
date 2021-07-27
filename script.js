@@ -1,39 +1,37 @@
-// Form 
-const tortoises = []
+// Form variables
+const forms = document.querySelectorAll('form');
 const submitBtns = document.querySelectorAll('.submit-btn');
+const infoBoards = document.querySelectorAll('.tortoise-info');
 
-// Race
+// Race variables
 const tortoiseOne = document.querySelector(".tortoise-one");
 const tortoiseTwo = document.querySelector(".tortoise-two");
 const raceControls = document.querySelector('.race-controls');
 const goButton = document.querySelector(".race-go");
 const goButtonText = document.querySelector(".btn-txt");
 const pauseIcon = document.querySelector(".race-pause");
-
-let speedOne = Math.floor(1 + Math.random() * 5);
-let speedTwo = Math.floor(1 + Math.random() * 5);
+let speedOne;
+let speedTwo;
 let counterOne = 0;
 let counterTwo = 0;
+let nameOne;
+let nameTwo;
 let winner;
 let winnerMessage;
 let pauseMessage;
 let intervalId;
 let interval = 500;
+// let intervalOne = Math.floor(1 + Math.random() * 5);
+// let intervalTwo = Math.floor(1 + Math.random() * 5);
 
-// Not working
-// only assigning the values from the first inputs selected by query selector.
-// should I ditch the object idea?
-const createTortoiseObj = () => {
-    let tortoise = {
-        name: document.querySelector('#name').value,
-        speed: document.querySelector('#speed').value
-    }
-    tortoises.push(tortoise);
-    console.log(tortoises);
-}
+// Event listeners
 
-submitBtns.forEach(btn => {
-    btn.addEventListener('click', createTortoiseObj)
+submitBtns[0].addEventListener('click', () => {
+    getUserInput(forms[0], infoBoards[0])
+});
+
+submitBtns[1].addEventListener('click', () => {
+    getUserInput(forms[1], infoBoards[1])
 });
 
 goButton.addEventListener('click', () => {
@@ -46,19 +44,42 @@ goButton.addEventListener('click', () => {
     }
 });
 
+// Form function 
+const getUserInput = (form, info) => {
+    // get input values
+    const name = form.querySelector('#name').value;
+    const speed = form.querySelector('#speed').value; 
+
+    // display user input on info board
+    info.querySelector('.name-display').textContent = name;
+    info.querySelector('.speed-display').textContent = `Speed: ${speed}mph`;
+
+    // update race speed variables
+    speedOne = parseInt(forms[0].querySelector("#speed").value);
+    speedTwo = parseInt(forms[1].querySelector("#speed").value);
+
+    // update name variables for winner announcement
+    nameOne = forms[0].querySelector("#name").value;
+    nameTwo = forms[1].querySelector("#name").value;
+    console.log({speedOne, speedTwo});
+    console.log({nameOne, nameTwo});
+}
+
 // Race functions
 const startRace = () => {
-    // add a 'racing' class to manipulate whether the race is on, paused or ended
+    // add a 'racing' class to manipulate whether the race is on, paused or ended in subsequent race functions
     goButton.classList.add('racing');
+
     // hide button text and display pause icon 
     goButtonText.classList.add('hide');
     pauseIcon.classList.remove('hide');
+
     // create and update the DOM with a message to let the user know they can pause the race by clicking the button
     pauseMessage = document.createElement('p');
     pauseMessage.textContent = `Can't handle the suspense? Pause the race and catch your breath`;
     raceControls.prepend(pauseMessage);
 
-    // each tortoise is assigned a different random number for it's movements (distance traveled) 
+    // assign each tortoise the user input speed in vw units for it's movements (distance traveled) 
     // each tortoise moves at it's own rate within a shared time interval defined by the setInterval method
     intervalId = setInterval(() => {
         tortoiseOne.style.transform =`translate(${speedOne + counterOne}vw)`;
@@ -71,7 +92,8 @@ const startRace = () => {
 
         // If one of the tortoises crosses 60vw (end of race area), pause the race and announce the winner
         if (counterOne === 60 || counterTwo === 60) {
-            goButton.classList.add('end-of-race')
+            goButton.classList.add('end-of-race');
+            goButtonText.textContent = 'Reset';
             pauseRace();
             announceWinner();    
         }
@@ -89,31 +111,42 @@ const pauseRace = () => {
      goButtonText.classList.remove('hide');
      pauseIcon.classList.add('hide');
      pauseMessage.remove();
-    }
-
-// reset the tortoise positions and restart the race when go button is pressed after the end of the race
-const resetGame = () => {
-    console.log('reset')
-    goButton.classList.remove('end-of-race');
-    tortoiseOne.style.transform =`none`;
-    counterOne = 0;
-    tortoiseTwo.style.transform =`none`;
-    counterTwo = 0;
-    winnerMessage.remove();
-    speedOne = Math.floor(1 + Math.random() * 5);
-    speedTwo = Math.floor(1 + Math.random() * 5);
-    startRace();
 }
+
+// reset the tortoise positions, form inputs and info board displays when go button is pressed after the end of the race
+const resetGame = () => {
+    // form and display reset
+    forms.forEach(form => form.reset());
+    infoBoards[0].querySelector('.name-display').textContent = `Tortoise One`;
+    infoBoards[1].querySelector('.name-display').textContent = `Tortoise Two`;
+    infoBoards.forEach(board => board.querySelector('.speed-display').textContent = '');
+
+    // remove 'end-of-race' class
+    goButton.classList.remove('end-of-race');
+    // reset go button text 
+    goButtonText.textContent = `Go!`
+    // reset tortoise positions 
+    tortoiseOne.style.transform =`none`;
+    tortoiseTwo.style.transform =`none`;
+    // reset counters and speeds
+    counterOne = 0;
+    counterTwo = 0;
+    speedOne = 0;
+    speedTwo = 0;
+    winnerMessage.remove();
+}
+
 // create winner/tie announcement message and add to the DOM 
 const announceWinner = () => {
     winnerMessage = document.createElement('p');
+    winnerMessage.classList.add('winner-announcement')
     if (counterOne === 60 && counterTwo === 60) {
         winnerMessage.textContent = `It's a tie!`;
     } else {
         if (counterOne === 60) {
-            winner = 'Tortoise One';
+            winner = nameOne;
         } else {
-            winner = 'Tortoise Two';
+            winner = nameTwo;
         }
         winnerMessage.textContent = `${winner} won the race!`;
         }
@@ -122,16 +155,10 @@ const announceWinner = () => {
 }  
 
 // To do:
-    // update the turtle names and speeds when button is submitted
-
-    // input custom speeds to control which tortoise moves faster
-    // assign the speed input as tortoise speed variables
-
-    // requires breaking up the setInterval function into two seperate functions (one for each tortoise) and make setInterval method timing random 
+    // Set randomly timed intervals for each tortoise
+    // requires breaking up the setInterval function into two seperate functions (one for each tortoise) 
 
 // Stretch goals
     // change tortoise representation to cartoon or photo / emoji
-
-    // add inputs to name the tortoises
-
     // add user ability to add more tortoises to the race
+    // display user message to complete form first if they try to start the race without inputing name and speed.

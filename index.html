@@ -13,12 +13,14 @@
   <body>
     <h1>Tortoise Racing Game</h1>
 
+    <p>Give each tortoises a name and set their speed, then hit submit!</p>
+
     <form>
       <div class="tortoise-one-inputs">
         <label for="name">Name</label>
         <input id="name" name="name" type="text" placeholder="e.g. Michelangelo">
         <label for="speed">Speed</label>
-        <input id="speed" class="slider" name="speed" type="range" min="0" max="5">
+        <input id="speed" class="slider" name="speed" type="range" min="1" max="5">
         <button class="submit-btn" type="button">Submit</button>
       </div>
     </form>
@@ -27,22 +29,22 @@
         <label for="name">Name</label>
         <input id="name" name="name" type="text" placeholder="e.g. Raphael">
         <label for="speed">Speed</label>
-        <input id="speed" class="slider" name="speed" type="range" min="0" max="5">
+        <input id="speed" class="slider" name="speed" type="range" min="1" max="5">
         <button class="submit-btn" type="button">Submit</button>
       </div>      
     </form>
 
-    <p>Click the buttons below to start racing the tortoises!</p>
+    <p>Click the button below to start racing the tortoises</p>
 
     <section class="race">
       <div class="info-board">
-        <div class="tortoise-one-info">
-          <p>Tortoise One</p>
-          <p>Speed:</p>
+        <div class="tortoise-info">
+          <p class="name-display">Tortoise One</p>
+          <p class="speed-display"></p>
         </div>
-        <div class="tortoise-two-info">
-          <p>Tortoise Two</p>
-          <p>Speed:</p>
+        <div class="tortoise-info">
+          <p class="name-display">Tortoise Two</p>
+          <p class="speed-display"></p>
         </div>  
       </div>
 
